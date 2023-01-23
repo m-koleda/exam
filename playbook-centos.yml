@@ -1,0 +1,203 @@
+#########################################################
+# DO Community Playbooks: Wordpress on CentOS7 LAMP
+#########################################################
+---
+- hosts: all
+  become: true
+  vars_files:
+    - vars/default.yml
+
+  tasks:
+#    - name: Install prerequisites
+#      yum: name=aptitude update_cache=yes state=latest force_apt_get=yes
+#      tags: [ system ]
+
+    - name: Update ca-certificates before importing the GPG Key
+      yum: name=ca-certificates state=latest
+
+    - name: Import Remi2018 and Webtatic GPG key
+      rpm_key: key={{ item }}  state=present
+      loop: [ 'https://mirror.webtatic.com/yum/RPM-GPG-KEY-webtatic-el7', 'https://rpms.remirepo.net/RPM-GPG-KEY-remi2017']
+
+    - name: Install Remi and Webtatic repos
+      yum: name={{ item }} update_cache=yes state=present
+      loop: [ 'https://mirror.webtatic.com/yum/el7/webtatic-release.rpm', 'https://rpms.remirepo.net/enterprise/remi-release-7.rpm' ]
+
+    - name: Install LAMP Packages
+      yum: name={{ item }} update_cache=yes state=latest
+      loop: [ 'httpd', 'php56w', 'php56w-opcache', 'php56w-mysql', 'php56w-gd']  #yum install php56w php56w-opcache yum install -y php56w php56w-opcache php56w-mysqlnd
+#      loop: [ 'apache2', 'mysql-server', 'python3-pymysql', 'php', 'php-mysql', 'libapache2-mod-php' ]
+      tags: [ system ]
+#      notify:
+#        - restart-httpd
+
+    - name: Restarting apache
+      service:
+        name: httpd
+        state: restarted
+        enabled: true
+
+    - name: Install the mariadb
+      yum:
+        name:
+          - mariadb-server
+          - MySQL-python
+        state: present
+
+    - name: Restarting mariadb pacakage
+      service:
+        name: mariadb
+        state: restarted
+        enabled: true
+
+#    - name: Install PHP Extensions
+#      yum: name={{ item }} update_cache=yes state=latest
+#      loop: "{{ php_modules }}"
+#      tags: [ system ]
+
+  # Apache Configuration
+#    - name: "apache  - Creating httpd.conf from template"
+#      template:
+#        src: httpd.conf.tmp
+#        dest: /etc/httpd/conf/httpd.conf
+#      notify:
+#        - restart-httpd
+
+    - name: Create document root
+      file:
+        path: "/var/www/{{ http_host }}"
+        state: directory
+        owner: "apache" #"www-data"
+        group: "apache" #"www-data"
+        mode: '0755'
+      tags: [ apache ]
+
+    - name: Set up Apache VirtualHost
+      template:
+        src: "files/httpd.conf.j2"
+        dest: "/etc/httpd/conf.d/{{ http_conf }}"
+#      notify: restart-httpd
+#      tags: [ apache ]
+
+#    - name: Restarting apache
+#      service:
+#        name: httpd
+#        state: restarted
+#        enabled: true
+
+#    - name: Enable rewrite module - NOT NEED IN CENTOS - Centos does not have a utility like a2enmod to enable apache modules. 
+#Modules are enabled during installation by the package manager (yum)
+#      shell: /usr/sbin/a2enmod rewrite
+#      notify: Reload Apache
+#      tags: [ apache ]
+
+#    - name: Enable new site
+#      shell: /usr/sbin/a2ensite {{ http_conf }}
+#      notify: Reload Apache
+#      tags: [ apache ]
+
+#    - name: Disable default Apache site
+#      shell: /usr/sbin/a2dissite 000-default.conf
+#      notify: Restart Apache
+#      tags: [ apache ]
+
+  # MySQL Configuration
+    - name: mariadb - Setting RootPassword
+      ignore_errors: true
+      mysql_user:
+        login_user: "root"
+        login_password: ""
+        user: "root"
+        password: "{{ mysql_root_password }}"
+      tags: [ mysql ]
+
+    - name: Remove all anonymous user accounts
+      mysql_user:
+        login_user: "root"
+        login_password: "{{ mysql_root_password }}"
+        user: ""
+        state: absent
+        host_all: true
+      tags: [ mysql ]
+
+    - name: Remove the MySQL test database
+      mysql_db:
+        name: test
+        state: absent
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+      tags: [ mysql ]
+
+    - name: Creates database for WordPress
+      mysql_db:
+        login_user: "root"
+        login_password: "{{ mysql_root_password }}"
+        name: "{{ mysql_db }}"
+        state: present
+      tags: [ mysql ]
+
+    - name: Create MySQL user for WordPress
+      mysql_user:
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+        name: "{{ mysql_user }}"
+        password: "{{ mysql_password }}"
+        priv: "{{ mysql_db }}.*:ALL"
+        state: present
+      tags: [ mysql ]
+
+
+  # UFW Configuration
+#    - name: "UFW - Allow HTTP on port {{ http_port }}"
+#      ufw:
+#      firewalld:
+#        rule: allow
+#        port: "{{ http_port }}"
+#        proto: tcp
+#        permanent: true
+#        state: enabled
+#        immediate: yes
+#      tags: [ system ]
+
+  # WordPress Configuration
+    - name: Download and unpack latest WordPress
+      unarchive:
+        src: https://wordpress.org/latest.tar.gz
+        dest: "/var/www/{{ http_host }}"
+        remote_src: yes
+        creates: "/var/www/{{ http_host }}/wordpress"
+      tags: [ wordpress ]
+
+    - name: Set ownership
+      file:
+        path: "/var/www/{{ http_host }}"
+        state: directory
+        recurse: yes
+        owner: apache #www-data
+        group: apache #www-data
+      tags: [ wordpress ]
+
+    - name: Set permissions for directories
+      shell: "/usr/bin/find /var/www/{{ http_host }}/wordpress/ -type d -exec chmod 750 {} \\;"
+      tags: [ wordpress ]
+
+    - name: Set permissions for files
+      shell: "/usr/bin/find /var/www/{{ http_host }}/wordpress/ -type f -exec chmod 640 {} \\;"
+      tags: [ wordpress ]
+
+    - name: Set up wp-config
+      template:
+        src: "files/wp-config.php.j2"
+        dest: "/var/www/{{ http_host }}/wordpress/wp-config.php"
+      tags: [ wordpress ]
+
+#  handlers:
+    - name: Reload Apache
+      service:
+        name: httpd
+        state: reloaded
+
+    - name: Restart Apache
+      service:
+        name: httpd
+        state: restarted

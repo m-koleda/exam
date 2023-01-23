@@ -1,0 +1,13 @@
+---
+configs:
+    use: 'centos'
+    ubuntu:
+        os: 'ubuntu/xenial64'
+        playbook: 'playbook-ubuntu.yml'
+        public_ip: '192.168.0.117'
+#        <more variables>...
+    centos:
+        os: 'centos/7'
+        playbook: 'playbook-centos.yml'
+        public_ip: '192.168.0.120'
+#        <more variables>...

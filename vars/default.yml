@@ -1,0 +1,22 @@
+#---
+#mysql_root_password: "mysql_root_password"
+#app_user: "ubuntu"
+#http_host: "test.local"
+#http_conf: "test.local.conf"
+#http_port: "80"
+#disable_default: true
+
+---
+#System Settings (for Ubuntu)
+php_modules: [ 'php-curl', 'php-gd', 'php-mbstring', 'php-xml', 'php-xmlrpc', 'php-soap', 'php-intl', 'php-zip' ]
+
+#MySQL Settings
+mysql_root_password: "password"
+mysql_db: "wordpress"
+mysql_user: "sammy"
+mysql_password: "password"
+
+#HTTP Settings
+http_host: "test.local"
+http_conf: "test.local.conf"
+http_port: "80"
