@@ -13,7 +13,8 @@ Vagrant.configure("2") do |config|
   #config.ssh.password = 'vagrant'
   #config.ssh.keys_only = false
   config.vm.define "consul-server" do |machine|
-	machine.vm.network "public_network", bridge: "wlp2s0", ip: vagrant_config['public_ip']
+	machine.vm.network "public_network", bridge: "enp1s0", ip: vagrant_config['public_ip'] 
+#wlp2s0
 #	machine.vm.provision "shell", inline: "echo ubuntu:ubuntu | chpasswd"
 #	machine.vm.synced_folder "html/", "/var/www/html"
 #	machine.vm.provision "shell", inline: "apt-get update && apt-get install -y python-minimal"
