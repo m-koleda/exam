@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        node 'Built-In Node'
+        node 'built-in'
     }
   
     stages {
