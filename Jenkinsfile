@@ -2,7 +2,6 @@ pipeline {
     agent {
         node 'built-in'
     }
-  
     stages {
         stage('Build'){
             steps {
