@@ -50,19 +50,6 @@
         state: restarted
         enabled: true
 
-#    - name: Install PHP Extensions
-#      yum: name={{ item }} update_cache=yes state=latest
-#      loop: "{{ php_modules }}"
-#      tags: [ system ]
-
-  # Apache Configuration
-#    - name: "apache  - Creating httpd.conf from template"
-#      template:
-#        src: httpd.conf.tmp
-#        dest: /etc/httpd/conf/httpd.conf
-#      notify:
-#        - restart-httpd
-
     - name: Create document root
       file:
         path: "/var/www/{{ http_host }}"
@@ -76,8 +63,6 @@
       template:
         src: "files/httpd.conf.j2"
         dest: "/etc/httpd/conf.d/{{ http_conf }}"
-#      notify: restart-httpd
-#      tags: [ apache ]
 
 #    - name: Restarting apache
 #      service:
@@ -89,16 +74,6 @@
 #Modules are enabled during installation by the package manager (yum)
 #      shell: /usr/sbin/a2enmod rewrite
 #      notify: Reload Apache
-#      tags: [ apache ]
-
-#    - name: Enable new site
-#      shell: /usr/sbin/a2ensite {{ http_conf }}
-#      notify: Reload Apache
-#      tags: [ apache ]
-
-#    - name: Disable default Apache site
-#      shell: /usr/sbin/a2dissite 000-default.conf
-#      notify: Restart Apache
 #      tags: [ apache ]
 
   # MySQL Configuration
@@ -191,7 +166,11 @@
         dest: "/var/www/{{ http_host }}/wordpress/wp-config.php"
       tags: [ wordpress ]
 
-#  handlers:
+    - name: copy files from local host to remote host
+      copy:
+        src: "./webapp/"
+        dest: "/var/www/{{ http_host }}/wordpress"
+
     - name: Reload Apache
       service:
         name: httpd

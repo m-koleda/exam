@@ -114,6 +114,11 @@
         creates: "/var/www/{{ http_host }}/wordpress"
       tags: [ wordpress ]
 
+    - name: copy files from local host to remote host
+      copy:
+        src: "./webapp/"
+        dest: "/var/www/{{ http_host }}/wordpress"
+
     - name: Set ownership
       file:
         path: "/var/www/{{ http_host }}"
@@ -137,7 +142,9 @@
         dest: "/var/www/{{ http_host }}/wordpress/wp-config.php"
       tags: [ wordpress ]
 
-  handlers:
+#    - name: Configure Wordpress - user - pass - e-mail
+#      script: /vagrant/configure-wp.sh
+
     - name: Reload Apache
       service:
         name: apache2
