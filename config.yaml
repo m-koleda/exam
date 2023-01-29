@@ -5,8 +5,8 @@ configs:
     ubuntu:
         box: 'ubuntu/bionic64'
         box_version: '20230124.0.0'
-#        playbook: 'playbook-ubuntu-startvm.yml'
-        playbook: 'playbook-ubuntu-cd.yml'
+        playbook: 'playbook-ubuntu-startvm.yml'
+#        playbook: 'playbook-ubuntu-cd.yml'
         public_ip: '192.168.0.117'
 #        <more variables>...
 
