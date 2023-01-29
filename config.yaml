@@ -1,7 +1,7 @@
 ---
 configs:
 
-    use: 'centos'
+    use: 'ubuntu'
     ubuntu:
         box: 'ubuntu/bionic64'
         box_version: '20230124.0.0'
