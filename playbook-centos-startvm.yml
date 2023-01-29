@@ -56,7 +56,7 @@
       template:
         src: "files/httpd.conf.j2"
         dest: "/etc/httpd/conf.d/{{ http_conf }}"
-        notify: Reload httpd
+#        notify: Reload httpd
 
 #    - name: Enable rewrite module - NOT NEED IN CENTOS - Centos does not have a utility like a2enmod to enable apache modules. 
 #Modules are enabled during installation by the package manager (yum)
@@ -158,7 +158,7 @@
       copy:
         src: "./webapp/"
         dest: "/var/www/{{ http_host }}/wordpress"
-        notify: Restart httpd
+      notify: Restart httpd
 
   handlers:
     - name: Reload httpd
