@@ -14,22 +14,6 @@
         group: www-data
         mode: '0640'
         force: true
-#    - name: Set ownership
-#      file:
-#        path: "/var/www/{{ http_host }}"
-#        state: directory
-#        recurse: yes
-#        owner: www-data
-#        group: www-data
-#      tags: [ wordpress ]
-
-#    - name: Set permissions for directories
-#      shell: "/usr/bin/find /var/www/{{ http_host }}/wordpress/ -type d -exec chmod 750 {} \\;"
-#      tags: [ wordpress ]
-
-#    - name: Set permissions for files
-#      shell: "/usr/bin/find /var/www/{{ http_host }}/wordpress/ -type f -exec chmod 640 {} \\;"
-#      tags: [ wordpress ]
 
     - name: Restart Apache
       service:

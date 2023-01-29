@@ -25,17 +25,10 @@
 
     - name: Install LAMP Packages
       yum: name={{ item }} update_cache=yes state=latest
-      loop: [ 'httpd', 'php56w', 'php56w-opcache', 'php56w-mysql', 'php56w-gd']  #yum install php56w php56w-opcache yum install -y php56w php56w-opcache php56w-mysqlnd
+      loop: [ 'httpd', 'php56w', 'php56w-opcache', 'php56w-mysql', 'php56w-gd']
 #      loop: [ 'apache2', 'mysql-server', 'python3-pymysql', 'php', 'php-mysql', 'libapache2-mod-php' ]
       tags: [ system ]
-#      notify:
-#        - restart-httpd
-
-    - name: Restarting apache
-      service:
-        name: httpd
-        state: restarted
-        enabled: true
+      notify: Restart httpd
 
     - name: Install the mariadb
       yum:
@@ -63,12 +56,7 @@
       template:
         src: "files/httpd.conf.j2"
         dest: "/etc/httpd/conf.d/{{ http_conf }}"
-
-#    - name: Restarting apache
-#      service:
-#        name: httpd
-#        state: restarted
-#        enabled: true
+        notify: Reload httpd
 
 #    - name: Enable rewrite module - NOT NEED IN CENTOS - Centos does not have a utility like a2enmod to enable apache modules. 
 #Modules are enabled during installation by the package manager (yum)
@@ -170,13 +158,16 @@
       copy:
         src: "./webapp/"
         dest: "/var/www/{{ http_host }}/wordpress"
+        notify: Restart httpd
 
-    - name: Reload Apache
+  handlers:
+    - name: Reload httpd
       service:
         name: httpd
         state: reloaded
 
-    - name: Restart Apache
+    - name: Restart httpd
       service:
         name: httpd
         state: restarted
+        enabled: true

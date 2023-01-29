@@ -10,6 +10,10 @@
       copy:
         src: "./webapp/"
         dest: "/var/www/{{ http_host }}/wordpress"
+        owner: apache
+        group: apache
+        mode: '0640'
+        force: true
 
     - name: Restart Apache
       service:
