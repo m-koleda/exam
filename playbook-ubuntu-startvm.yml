@@ -145,6 +145,7 @@
 #    - name: Configure Wordpress - user - pass - e-mail
 #      script: /vagrant/configure-wp.sh
 
+  handlers:
     - name: Reload Apache
       service:
         name: apache2

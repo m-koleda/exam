@@ -1,0 +1,17 @@
+---
+- hosts: all
+  become: true
+  vars_files:
+    - vars/default.yml
+
+  tasks:
+
+    - name: Copy files from local host to remote host
+      copy:
+        src: "./webapp/"
+        dest: "/var/www/{{ http_host }}/wordpress"
+
+    - name: Restart Apache
+      service:
+        name: httpd
+        state: restarted

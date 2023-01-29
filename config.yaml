@@ -1,18 +1,20 @@
 ---
 configs:
 
-    use: 'centos'
+    use: 'ubuntu'
     ubuntu:
-        box: 'ubuntu/xenial64'
-        box_version: '20211001.0.0'
-        playbook: 'playbook-ubuntu.yml'
+        box: 'ubuntu/bionic64' #'ubuntu/xenial64'
+        box_version: '20230124.0.0' #'20211001.0.0'
+#        playbook: 'playbook-ubuntu-startvm.yml'
+        playbook: 'playbook-ubuntu-cd.yml'
         public_ip: '192.168.0.117'
 #        <more variables>...
 
     centos:
         box: 'centos/7'
         box_version: '2004.01'
-        playbook: 'playbook-centos.yml'
+        playbook: 'playbook-centos-startvm.yml'
+#        playbook: 'playbook-centos-cd.yml'
         public_ip: '192.168.0.120'
 #        <more variables>...
 
