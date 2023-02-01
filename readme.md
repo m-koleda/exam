@@ -21,9 +21,9 @@ A virtualhost will be created with the options specified in the `vars/default.ym
 To follow this tutorial, you will need:  
 
 One Ubuntu 22.04 server with installed:
-- Virtualbox 6.1.32  
-- Vagrant 2.3.4 with vbguest plugin
-- Jenkins 2.375.2 (running as standart user, not jenkins - it's need)
+- [Virtualbox 6.1.32](https://docs.oracle.com/en/virtualization/virtualbox/6.0/user/install-linux-host.html)  
+- [Vagrant 2.3.4](https://www.vagrantup.com/DOCS/installation) with vbguest plugin (cli: vagrant plugin install vagrant-vbguest)
+- [Jenkins 2.375.2](https://www.digitalocean.com/community/tutorials/how-to-install-jenkins-on-ubuntu-22-04) or [as container](https://github.com/m-koleda/guides/blob/main/jenkinks/jenkins-as-container.md "jenkins as container"). The Jenkins must be run as standart user, not jenkins user.
 
 ### 1. Customize Options in vars/default.yml
 
