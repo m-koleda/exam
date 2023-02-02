@@ -1,6 +1,6 @@
 # Final project at itstep.by
 
-# Jenkins + Vagrant + Ansible for Wordpress LAMP on Ubuntu 18.04 LTS or CentOS 7
+# Jenkins + Vagrant + Ansible for Wordpress LAMP on Ubuntu 18.04 LTS or CentOS 7 with monitoring by Prometeus
 
 There are too many Jenkins+Ansible+Terraform for any cloud tutorials and not many for Jenkins+Vagrant+Ansible with create VM on local machine, so I wanted to understand how to do it.  
 By this tutorial you can up an Ubuntu 18.04 or CentOS 7 virtual machine and install a LAMP environment (**L**inux, **A**pache, **M**ySQL and **P**HP), Wordpress and copy site from dir site to VMs. Machines will auto-create by Vagrant and will configuare by Ansible. 
@@ -25,6 +25,7 @@ One Ubuntu 22.04 server with installed:
 - [Virtualbox 6.1.32](https://docs.oracle.com/en/virtualization/virtualbox/6.0/user/install-linux-host.html)  
 - [Vagrant 2.3.4](https://www.vagrantup.com/DOCS/installation) with vbguest plugin (cli: vagrant plugin install vagrant-vbguest)
 - [Jenkins 2.375.2](https://www.digitalocean.com/community/tutorials/how-to-install-jenkins-on-ubuntu-22-04) or [as container](https://github.com/m-koleda/guides/blob/main/jenkinks/jenkins-as-container.md "jenkins as container"). The Jenkins must be run as standart user, not jenkins user.
+- [Prometeus 2.31.2](https://www.server-world.info/en/note?os=Ubuntu_18.04&p=prometheus)
 
 ### 1. Customize Options in vars/default.yml
 
@@ -854,3 +855,5 @@ https://docs.ansible.com/ansible/latest/scenario_guides/guide_vagrant.html#
 https://help.ubuntu.ru/wiki/vagrant  
 https://pocoz.gitbooks.io/ansible_for_dev_ops_russian/content/chapter1/ispolzovanie-ansible-s-vagrant.html  
 https://github.com/hashicorp/vagrant/issues/9666#issuecomment-401931144  
+https://www.server-world.info/en/note?os=Ubuntu_18.04&p=prometheus  
+https://ealebed.github.io/posts/2017/%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-prometheus-node-exporter-%D0%B2-centos-7/  
