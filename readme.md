@@ -725,6 +725,116 @@ Jenkins dev another build output:
     Finished: SUCCESS
 
 
+Jenkins master build output when docker compose was used:  
+
+    Started by user maksim
+    Obtained Jenkinsfile from git https://github.com/m-koleda/exam.git
+    [Pipeline] Start of Pipeline
+    [Pipeline] node
+    Running on Jenkins in /var/lib/jenkins/workspace/exam-test-branch
+    [Pipeline] {
+    [Pipeline] stage
+    [Pipeline] { (Declarative: Checkout SCM)
+    [Pipeline] checkout
+    Selected Git installation does not exist. Using Default
+    The recommended git tool is: NONE
+    No credentials specified
+     > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/exam-test-branch/.git # timeout=10
+    Fetching changes from the remote Git repository
+     > git config remote.origin.url https://github.com/m-koleda/exam.git # timeout=10
+    Fetching upstream changes from https://github.com/m-koleda/exam.git
+     > git --version # timeout=10
+     > git --version # 'git version 2.34.1'
+     > git fetch --tags --force --progress -- https://github.com/m-koleda/exam.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+     > git rev-parse refs/remotes/origin/test^{commit} # timeout=10
+    Checking out Revision 8014f3c1af6b188e8e1ffd85eb3dba7d872f7039 (refs/remotes/origin/test)
+     > git config core.sparsecheckout # timeout=10
+     > git checkout -f 8014f3c1af6b188e8e1ffd85eb3dba7d872f7039 # timeout=10
+    Commit message: "update test.py - add docker"
+     > git rev-list --no-walk c5f812cbb3f0418a097f9e305e06df9d0ed4a9d5 # timeout=10
+    [Pipeline] }
+    [Pipeline] // stage
+    [Pipeline] withEnv
+    [Pipeline] {
+    [Pipeline] stage
+    [Pipeline] { (Build)
+    [Pipeline] sh
+    + echo BUILDING...
+    BUILDING...
+    [Pipeline] sh
+    + echo BUILD ID - 2
+    BUILD ID - 2
+    [Pipeline] sh
+    + echo BUILD STAGE OK
+    BUILD STAGE OK
+    [Pipeline] }
+    [Pipeline] // stage
+    [Pipeline] stage
+    [Pipeline] { (Test)
+    [Pipeline] sh
+    + echo TESTING...
+    TESTING...
+    [Pipeline] sh
+    + python3 test.py
+    CHECK REQUIRED FIELDS IN CONFIG.YAML... 
+
+    check 'use' - type of OS...
+    ...ok. use: Docker
+    check playbook...
+    ...ok
+    check public_ip...
+    ...ok
+    CHECK REQUIRED FIELDS IN JENKINSFILE... 
+
+    check for presence of test.py
+    ...ok
+    check right Vagrant command...
+    ...ok
+    CHECK REQUIRED FIELDS IN VAGRANTFILE... 
+
+    check link for config.yaml
+    ...ok
+    check for presence of boxes name ...
+    ...ok
+    check for public network and bridge ...
+    ...ok
+    TEST STAGE OK
+    [Pipeline] }
+    [Pipeline] // stage
+    [Pipeline] stage
+    [Pipeline] { (Publish)
+    [Pipeline] sh
+    + echo DEPLOYING...
+    DEPLOYING...
+    [Pipeline] script
+    [Pipeline] {
+    [Pipeline] readFile
+    [Pipeline] sh
+    + docker-compose up -d
+    Creating network "exam-test-branch_app-network" with driver "bridge"
+    Creating volume "exam-test-branch_wordpress" with default driver
+    Creating volume "exam-test-branch_dbdata" with default driver
+    Creating db ... 
+    Creating db ... done
+    Creating wordpress ... 
+    Creating wordpress ... done
+    Creating webserver ... 
+    Creating webserver ... done
+    [Pipeline] }
+    [Pipeline] // script
+    [Pipeline] sh
+    + echo DEPLOY STAGE OK
+    DEPLOY STAGE OK
+    [Pipeline] }
+    [Pipeline] // stage
+    [Pipeline] }
+    [Pipeline] // withEnv
+    [Pipeline] }
+    [Pipeline] // node
+    [Pipeline] End of Pipeline
+    Finished: SUCCESS
+    
+
 
 
 For more information on how to run Ansible setup check this guide: [How to Use Ansible to Install and Set Up WordPress with LAMP on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-use-ansible-to-install-and-set-up-wordpress-with-lamp-on-ubuntu-18-04).
