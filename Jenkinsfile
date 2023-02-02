@@ -16,10 +16,17 @@ pipeline {
 		sh 'python3 test.py'
             }
         }
-        stage('Deploy'){
+        stage("Publish") {
             steps {
                 sh 'echo DEPLOYING...'
-                sh 'vagrant up --provision'
+                script {
+                    if (readFile('config.yaml').contains("use: 'docker'")) {
+                        sh 'docker-compose up -d'
+                    }
+                    else {
+                        sh 'vagrant up --provision'
+                    }
+                }
                 sh 'echo DEPLOY STAGE OK'
             }
         }
