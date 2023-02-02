@@ -4,6 +4,7 @@
 
 There are too many Jenkins+Ansible+Terraform for any cloud tutorials and not many for Jenkins+Vagrant+Ansible with create VM on local machine, so I wanted to understand how to do it.  
 By this tutorial you can up an Ubuntu 18.04 or CentOS 7 virtual machine and install a LAMP environment (**L**inux, **A**pache, **M**ySQL and **P**HP), Wordpress and copy site from dir site to VMs. Machines will auto-create by Vagrant and will configuare by Ansible. 
+Also you can run docker compose in local machine.  
 You must choose an OS and playbook for run VM and delivery code or just delivery code in the `config.yaml` file.  
 A virtualhost will be created with the options specified in the `vars/default.yml` variable file.  
 
@@ -48,6 +49,7 @@ nano config.yaml
 ```
 For first build with creating VM in Jenkins use playbook--startvm.yml
 For another build use playbook--cd.yml
+If you want to run docker compose set os: 'docker'
 
 ### 3. Create Pipelines in Jenkins 
 
