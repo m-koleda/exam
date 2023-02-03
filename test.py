@@ -14,6 +14,10 @@ elif "use: 'ubuntu'" in file:
     print("check 'use' - type of OS...")
 #    sleep(1)
     print("...ok. use: Ubuntu")
+elif "use: 'docker'" in file:
+    print("check 'use' - type of OS...")
+#    sleep(1)
+    print("...ok. use: Docker")
 else:
     print("ERROR IN CONFIG.YAML FILE: incorrect OS")
     raise ValueError()

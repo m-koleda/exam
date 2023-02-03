@@ -160,6 +160,50 @@
         dest: "/var/www/{{ http_host }}/wordpress"
       notify: Restart httpd
 
+    # Prometeus monitoring agent
+
+    - name: Download and unpack Prometeus node explorer
+      unarchive:
+        src: https://github.com/prometheus/node_exporter/releases/download/v1.5.0/>
+        dest: /opt
+        remote_src: yes
+        creates: /opt/node_exporter
+
+    - name: Create dir
+      file:
+        path: /opt/node_exporter
+        state: directory
+
+    - name: Copy file to /opt/node_exporter
+      copy:
+        remote_src: yes
+        src: /opt/node_exporter-1.5.0.linux-amd64/
+        dest: /opt/node_exporter
+      tags: [ prometeus ]
+
+    - name: Create file node_exporter.service in /etc/systemd/system/
+      copy:
+        dest: "/etc/systemd/system/node_exporter.service"
+        content: |
+          [Unit]
+          Description=Node Exporter
+
+          [Service]
+          ExecStart=/opt/node_exporter/node_exporter
+
+          [Install]
+          WantedBy=default.target
+
+    - name: Reload systemd
+      command: systemctl daemon-reload
+
+    - name: Enable  node_exporter.service
+      command: systemctl enable node_exporter.service
+
+    - name: Start node_exporter
+      command: systemctl start node_exporter.service
+
+
   handlers:
     - name: Reload httpd
       service:

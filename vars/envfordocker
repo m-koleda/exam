@@ -1,0 +1,7 @@
+#MySQL Settings
+MYSQL_DB=wordpress
+MYSQL_USER=sammy
+MYSQL_PASSWORD=password
+
+#HTTP Settings
+http_host=test.local
