@@ -24,11 +24,11 @@ pipeline {
                         sh 'echo use docker-compose'
 			sh 'docker-compose up -d'
                     }
-                    elif (readFile('config.yaml').contains("use: 'ubuntu'")) {
+                    else if (readFile('config.yaml').contains("use: 'ubuntu'")) {
                         sh 'echo use VM with Ubuntu'
 			sh 'vagrant up --provision'
                     }
-		    elif (readFile('config.yaml').contains("use: 'centos'")) {
+		    else if (readFile('config.yaml').contains("use: 'centos'")) {
                         sh 'echo use VM with Centos'
 			sh 'vagrant up --provision'
                     }
