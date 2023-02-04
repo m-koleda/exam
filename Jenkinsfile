@@ -21,10 +21,19 @@ pipeline {
                 sh 'echo DEPLOYING...'
                 script {
                     if (readFile('config.yaml').contains("use: 'docker'")) {
-                        sh 'docker-compose up -d'
+                        sh 'echo use docker-compose'
+			sh 'docker-compose up -d'
                     }
-                    else {
-                        sh 'vagrant up --provision'
+                    elif (readFile('config.yaml').contains("use: 'ubuntu'")) {
+                        sh 'echo use VM with Ubuntu'
+			sh 'vagrant up --provision'
+                    }
+		    elif (readFile('config.yaml').contains("use: 'centos'")) {
+                        sh 'echo use VM with Centos'
+			sh 'vagrant up --provision'
+                    }
+		    else {
+                        sh 'echo check config.yaml - use only docker or ubuntu or centos'
                     }
                 }
                 sh 'echo DEPLOY STAGE OK'
