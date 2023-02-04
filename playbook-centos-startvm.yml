@@ -164,7 +164,7 @@
 
     - name: Download and unpack Prometeus node explorer
       unarchive:
-        src: https://github.com/prometheus/node_exporter/releases/download/v1.5.0/>
+        src: https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-amd64.tar.gz
         dest: /opt
         remote_src: yes
         creates: /opt/node_exporter
